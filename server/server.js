@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import User from "./models/User.js";
+import authRoutes from "./routes/authRoutes.js";
 
 
 dotenv.config();
@@ -15,6 +16,10 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Routes
+app.use("/api/auth", authRoutes);
 
 // Test route
 app.get("/", (req, res) => {
@@ -30,6 +35,7 @@ app.get("/test-user", async (req, res) => {
 
   res.json(user);
 });
+
 
 
 // Port
