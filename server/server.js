@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import User from "./models/User.js";
 import authRoutes from "./routes/authRoutes.js";
+import protect from "./middleware/authMiddleware.js";
+
 
 
 dotenv.config();
@@ -34,6 +36,13 @@ app.get("/test-user", async (req, res) => {
   });
 
   res.json(user);
+});
+
+app.get("/api/protected", protect, (req, res) => {
+  res.json({
+    message: "You accessed a protected route!",
+    user: req.user,
+  });
 });
 
 
