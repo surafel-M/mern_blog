@@ -1,35 +1,23 @@
 import { Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
 
-import { useEffect } from "react";
-import API from "./services/api";
-
-function Home() {
-  useEffect(() => {
-    API.get("/")
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err));
-  }, []);
-
-  return <h2>Home Page</h2>;
-}
-
-function Login() {
-  return <h2>Login Page</h2>;
-}
-
-function Register() {
-  return <h2>Register Page</h2>;
-}
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import CreatePost from "./pages/CreatePost";
+import PostDetail from "./pages/PostDetail";
 
 function App() {
   return (
     <div>
-      <h1>MERN Blog</h1>
+      <Navbar />
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/create" element={<CreatePost />} />
+        <Route path="/post/:id" element={<PostDetail />} />
       </Routes>
     </div>
   );
