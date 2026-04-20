@@ -10,22 +10,32 @@ function Navbar() {
   };
 
   return (
-    <nav style={{ padding: "10px", borderBottom: "1px solid #ccc" }}>
-      <Link to="/">Home</Link>
+    <nav style={{
+  padding: "15px",
+  background: "white",
+  borderBottom: "1px solid #ddd",
+  display: "flex",
+  justifyContent: "space-between"
+}}>
+  <div>
+    <Link to="/">Blogger</Link>
+  </div>
 
-      {user ? (
-        <>
-          <span style={{ margin: "0 10px" }}>Hello, {user.username}</span>
-          <Link to="/create">Create</Link>
-          <button onClick={logout}>Logout</button>
-        </>
-      ) : (
-        <>
-          <Link to="/login" style={{ marginLeft: "10px" }}>Login</Link>
-          <Link to="/register" style={{ marginLeft: "10px" }}>Register</Link>
-        </>
-      )}
-    </nav>
+  <div>
+    {user ? (
+      <>
+        <span>{user.username}</span>
+        <Link to="/create">Create</Link>
+        <button onClick={logout}>Logout</button>
+      </>
+    ) : (
+      <>
+        <Link to="/login">Login</Link>
+        <Link to="/register">Register</Link>
+      </>
+    )}
+  </div>
+</nav>
   );
 }
 

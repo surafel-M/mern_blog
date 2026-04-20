@@ -29,7 +29,7 @@ function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form  onSubmit={handleSubmit}>
       <h2>Login</h2>
 
       <input name="email" placeholder="Email" onChange={handleChange} />

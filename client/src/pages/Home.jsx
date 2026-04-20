@@ -4,29 +4,33 @@ import { Link } from "react-router-dom";
 
 function Home() {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const { data } = await API.get("/posts");
-        setPosts(data);
-      } catch (error) {
-        console.log(error);
-      }
+      const { data } = await API.get("/posts");
+      setPosts(data);
+    } catch (error) {
+      setError("Failed to load posts");
+    } finally {
+      setLoading(false);
+    }
     };
 
     fetchPosts();
   }, []);
 
   return (
-    <div>
+    <div className="container">
       <h2>All Posts</h2>
-
-      {posts.length === 0 ? (
-        <p>No posts yet</p>
+      
+      {loading ? (
+        <p>Loading posts...</p>
       ) : (
         posts.map((post) => (
-          <div key={post._id} style={{ border: "1px solid #ccc", margin: "10px", padding: "10px" }}>
+          <div className="card" key={post._id}>
             <h3>{post.title}</h3>
             <p>{post.content.substring(0, 100)}...</p>
 
@@ -34,6 +38,7 @@ function Home() {
           </div>
         ))
       )}
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 }
