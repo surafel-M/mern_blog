@@ -6,7 +6,7 @@ import User from "./models/User.js";
 import authRoutes from "./routes/authRoutes.js";
 import protect from "./middleware/authMiddleware.js";
 import postRoutes from "./routes/postRoutes.js";
-
+import commentRoutes from "./routes/commentRoutes.js";
 
 
 dotenv.config();
@@ -24,6 +24,9 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/comments", commentRoutes);
+
+
 
 // Test route
 app.get("/api", (req, res) => {
