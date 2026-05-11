@@ -43,6 +43,9 @@ function PostDetail() {
 
   return (
     <div>
+      {post.image && (
+  <img src={post.image} alt="" style={{ width: "100%" }} />
+)}
       <h2>{post.title}</h2>
       <p>{post.content}</p>
       <small>By: {post.author?.username}</small>

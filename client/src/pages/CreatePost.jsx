@@ -3,6 +3,7 @@ import API from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 function CreatePost() {
+  const [image, setImage] = useState(null);
   const [form, setForm] = useState({
     title: "",
     content: "",
@@ -15,20 +16,26 @@ function CreatePost() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      await API.post("/posts", form);
-      navigate("/");
-    } catch (error) {
-      console.log(error.response?.data?.message || error.message);
-    }
-  };
+  try {
+    const formData = new FormData();
+    formData.append("title", form.title);
+    formData.append("content", form.content);
+    if (image) formData.append("image", image);
+
+    await API.post("/posts", formData);
+
+    navigate("/");
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   return (
     <form onSubmit={handleSubmit}>
       <h2>Create Post</h2>
-
+      <input type="file" onChange={(e) => setImage(e.target.files[0])} />
       <input
         name="title"
         placeholder="Title"

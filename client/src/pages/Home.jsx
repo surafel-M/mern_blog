@@ -31,6 +31,9 @@ function Home() {
       ) : (
         posts.map((post) => (
           <div className="card" key={post._id}>
+            {post.image && (
+  <img src={post.image} alt="" style={{ width: "100%" }} />
+)}
             <h3>{post.title}</h3>
             <p>{post.content.substring(0, 100)}...</p>
 
