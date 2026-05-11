@@ -1,17 +1,42 @@
 import Post from "../models/Post.js";
+import cloudinary from "../config/cloudinary.js";
 
-// Create post
+//Create post
 export const createPost = async (req, res) => {
   try {
     const { title, content } = req.body;
 
-    const post = await Post.create({
-      title,
-      content,
-      author: req.user._id,
-    });
+    let imageUrl = "";
 
-    res.status(201).json(post);
+    if (req.file) {
+      const result = await cloudinary.uploader.upload_stream(
+        { folder: "mern_blog" },
+        async (error, result) => {
+          if (error) {
+            return res.status(500).json({ message: error.message });
+          }
+
+          const post = await Post.create({
+            title,
+            content,
+            author: req.user._id,
+            image: result.secure_url,
+          });
+
+          res.status(201).json(post);
+        }
+      );
+
+      result.end(req.file.buffer);
+    } else {
+      const post = await Post.create({
+        title,
+        content,
+        author: req.user._id,
+      });
+
+      res.status(201).json(post);
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -24,6 +49,7 @@ export const getPosts = async (req, res) => {
     res.json(posts);
   } catch (error) {
     res.status(500).json({ message: error.message });
+    
   }
 };
 

@@ -7,12 +7,16 @@ import {
   deletePost,
 } from "../controllers/postController.js";
 import protect from "../middleware/authMiddleware.js";
+import upload from "../middleware/uploadMiddleware.js";
+
+
 
 const router = express.Router();
 
+
 router.route("/")
   .get(getPosts)
-  .post(protect, createPost);
+  .post(protect, upload.single("image"), createPost);
 
 router.route("/:id")
   .get(getPostById)
