@@ -60,11 +60,34 @@ export const getMyPosts = async (req, res) => {
 // Get all posts
 export const getPosts = async (req, res) => {
   try {
-    const posts = await Post.find().populate("author", "username email");
+    const keyword = req.query.search
+      ? {
+          $or: [
+            {
+              title: {
+                $regex: req.query.search,
+                $options: "i",
+              },
+            },
+            {
+              content: {
+                $regex: req.query.search,
+                $options: "i",
+              },
+            },
+          ],
+        }
+      : {};
+
+    const posts = await Post.find(keyword)
+      .populate("author", "username")
+      .sort({ createdAt: -1 });
+
     res.json(posts);
   } catch (error) {
-    res.status(500).json({ message: error.message });
-    
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
