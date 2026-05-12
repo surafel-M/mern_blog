@@ -24,7 +24,7 @@ function Navbar() {
   <div>
     {user ? (
       <>
-        <span>{user.username}</span>
+        <Link to="/profile">Profile</Link>
         <Link to="/create">Create</Link>
         <button onClick={logout}>Logout</button>
       </>
