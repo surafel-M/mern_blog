@@ -1,6 +1,7 @@
 import express from "express";
 import {
   createPost,
+  getMyPosts,
   getPosts,
   getPostById,
   updatePost,
@@ -18,6 +19,7 @@ router.route("/")
   .get(getPosts)
   .post(protect, upload.single("image"), createPost);
 
+router.get("/my-posts", protect, getMyPosts);  
 router.route("/:id")
   .get(getPostById)
   .put(protect, updatePost)
