@@ -6,25 +6,50 @@ function Home() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+
+  useEffect(() => {
+  const timer = setTimeout(() => {
+    setDebouncedSearch(search);
+  }, 500);
+
+  return () => clearTimeout(timer);
+}, [search]);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      try {
-      const { data } = await API.get("/posts");
-      setPosts(data);
-    } catch (error) {
-      setError("Failed to load posts");
-    } finally {
-      setLoading(false);
-    }
-    };
+  setLoading(true);
+
+  try {
+    const { data } = await API.get(`/posts?search=${debouncedSearch}`);
+    setPosts(data);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};
 
     fetchPosts();
-  }, []);
+  }, [debouncedSearch]);
 
   return (
     <div className="container">
       <h2>All Posts</h2>
+
+      <input
+  type="text"
+  placeholder="Search posts..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  style={{
+    width: "100%",
+    padding: "10px",
+    marginBottom: "20px",
+  }}
+/>
       
       {loading ? (
         <p>Loading posts...</p>
